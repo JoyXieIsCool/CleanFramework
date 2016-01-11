@@ -12,4 +12,8 @@ public class LogUtil {
     public static void error(String msg, Throwable e) {
         LOGGER.error(msg, e);
     }
+
+    public static void info(String msg, Throwable e) {
+        LOGGER.info(msg, e);
+    }
 }

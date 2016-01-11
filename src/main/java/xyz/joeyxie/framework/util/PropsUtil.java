@@ -1,8 +1,5 @@
 package xyz.joeyxie.framework.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,8 +9,6 @@ import java.util.Properties;
  * Created by joey on 2016/1/6.
  */
 public class PropsUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PropsUtil.class);
-
 
     /**
      * 加载属性文件
@@ -29,7 +24,7 @@ public class PropsUtil {
             props = new Properties();
             props.load(is);
         } catch (IOException e) {
-            LOGGER.error("load properties file failure", e);
+            LogUtil.error("load properties file failure", e);
         } finally {
             if(null != is) {
                 try {

@@ -1,5 +1,7 @@
 # Maven #
 target/
+# Maven test folder #
+src/test/java
 
 # IDEA #
 .idea/

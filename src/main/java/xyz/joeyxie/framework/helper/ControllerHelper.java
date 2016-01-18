@@ -49,7 +49,8 @@ public class ControllerHelper {
                                 if (ArrayUtil.isNotEmpty(array) && 2 == array.length) {
 
                                     String requestMethod = array[0], requestPath = array[1];
-                                    Request request = new Request(requestMethod, requestPath);
+                                    // 用小写格式保存响应方法
+                                    Request request = new Request(requestMethod.toLowerCase(), requestPath);
                                     Handler handler = new Handler(controllerClass, method);
 
                                     // 将映射关系添加到ACTION_MAP中保存

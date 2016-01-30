@@ -55,4 +55,12 @@ public class BeanHelper {
         throw new RuntimeException("can not get bean by class: " + cls);
 
     }
+
+
+    /**
+     * 添加Class和它对应的实例到容器中
+     */
+    public static void addBean(Class<?> cls, Object object) {
+        BEAN_MAP.put(cls, object);
+    }
 }

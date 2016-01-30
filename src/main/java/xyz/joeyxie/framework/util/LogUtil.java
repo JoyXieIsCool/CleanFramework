@@ -16,4 +16,8 @@ public class LogUtil {
     public static void info(String msg, Throwable e) {
         LOGGER.info(msg, e);
     }
+
+    public static void debug(String msg) {
+        LOGGER.debug(msg);
+    }
 }

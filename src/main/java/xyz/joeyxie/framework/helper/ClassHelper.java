@@ -4,6 +4,7 @@ import xyz.joeyxie.framework.annotation.Controller;
 import xyz.joeyxie.framework.annotation.Service;
 import xyz.joeyxie.framework.util.ClassUtil;
 
+import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,5 +67,37 @@ public class ClassHelper {
         beanClasses.addAll(getControllerClassSet());
 
         return beanClasses;
+    }
+
+    /**
+     * 获取应用包名下某个父类(或接口)的所有子类(或者实现类)
+     */
+    public static Set<Class<?>> getClassSetBySuper(Class<?> superClass) {
+        Set<Class<?>> classSet = new HashSet<Class<?>>();
+        for (Class<?> cls : CLASS_SET) {
+
+            // 如果 cls 的对象可以赋值给 superClass 的对象，且它们不等，则说明 cls 是superClass的子类或实现类
+            if (superClass.isAssignableFrom(cls) && !superClass.equals(cls)) {
+                classSet.add(cls);
+            }
+        }
+
+        return classSet;
+    }
+
+    /**
+     * 获取应用包名下带有指定注解的所有类的Class
+     */
+    public static Set<Class<?>> getClassSetByAnnotation(Class<? extends Annotation> annotationClass) {
+        Set<Class<?>> classSet = new HashSet<Class<?>>();
+        for (Class<?> cls : CLASS_SET) {
+
+            // 如果 cls 上出现了 annotationClass 注解则添加该 cls 到集合中
+            if (cls.isAnnotationPresent(annotationClass)) {
+                classSet.add(cls);
+            }
+        }
+
+        return classSet;
     }
 }

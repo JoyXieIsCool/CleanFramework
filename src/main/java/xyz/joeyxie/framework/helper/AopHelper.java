@@ -1,9 +1,11 @@
 package xyz.joeyxie.framework.helper;
 
 import xyz.joeyxie.framework.annotation.Aspect;
+import xyz.joeyxie.framework.annotation.Service;
 import xyz.joeyxie.framework.proxy.AspectProxy;
 import xyz.joeyxie.framework.proxy.Proxy;
 import xyz.joeyxie.framework.proxy.ProxyFactory;
+import xyz.joeyxie.framework.proxy.TransactionProxy;
 import xyz.joeyxie.framework.util.LogUtil;
 import xyz.joeyxie.framework.util.ReflectionUtil;
 
@@ -64,6 +66,17 @@ public class AopHelper {
     private static Map<Class<?>, Set<Class<?>>> createProxyToTargetClassesSetMap() throws Exception {
         Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<Class<?>, Set<Class<?>>>();
 
+        addAspectProxy(proxyMap);
+        addTransactionProxy(proxyMap);
+
+        return proxyMap;
+    }
+
+    /**
+     * 创建切面代理和被它代理类的集合之间的的映射关系，并保存到proxyMap中
+     * @param proxyMap
+     */
+    private static void addAspectProxy(Map<Class<?>, Set<Class<?>>> proxyMap) throws Exception{
         // 从 Bean 容器中获取 AspectProxy 类的子类，即所有实现了切面逻辑的类
         Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
 
@@ -81,10 +94,19 @@ public class AopHelper {
             // 把切面逻辑类和目标代理类集合的映射关系添加到Map中
             proxyMap.put(proxyClass, targetClassSet);
         }
-
-        return proxyMap;
     }
 
+    /**
+     * 创建事务代理和service类集合之间的映射关系，并保存到proxyMap中
+     * @param proxyMap
+     */
+    private static void addTransactionProxy(Map<Class<?>, Set<Class<?>>> proxyMap) {
+        // 获取所有被 @Service 注解标记的类
+        Set<Class<?>> serviceClassSet = ClassHelper.getClassSetByAnnotation(Service.class);
+
+        // 添加事务代理类和service类结合之间的映射
+        proxyMap.put(TransactionProxy.class, serviceClassSet);
+    }
 
     /**
      * 创建目标类和它的代理链之间的映射，每个被代理目标类的Class都对应于一个List，其中存放的是所有横切逻辑的Proxy接口的实现类。
